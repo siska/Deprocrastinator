@@ -30,6 +30,20 @@
     self.toDoTextField.center = CGPointMake(self.toDoTextField.center.x, self.toDoTextField.center.y-self.toDoTextField.frame.size.height);
 }
 
+- (IBAction)onAddButtonPressed:(id)sender
+{
+    self.toDoTextField.enabled = YES;
+    [self.toDoTextField becomeFirstResponder];
+}
+
+- (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender
+{
+    
+}
+
+
+#pragma mark - UITableViewDelegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.toDoArray.count;
@@ -50,21 +64,17 @@
     [textField resignFirstResponder];
     textField.enabled = NO;
 
-    //[self tableView:self.tableView numberOfRowsInSection:0];
-    //[self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.toDoArray.count-1 inSection:0]];
-
     return YES;
 }
 
-- (IBAction)onAddButtonPressed:(id)sender
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+// Add functionality to uncheck an item
 {
-    self.toDoTextField.enabled = YES;
-    [self.toDoTextField becomeFirstResponder];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
 }
-
-
-
-
 
 
 @end
