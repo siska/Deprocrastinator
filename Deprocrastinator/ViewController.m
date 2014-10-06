@@ -12,7 +12,6 @@
 @property NSMutableArray *toDoArray;
 @property (weak, nonatomic) IBOutlet UITextField *toDoTextField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *editDoneButton;
 
 @end
 
@@ -39,10 +38,19 @@
 
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onEditButtonPressed:)];
-    //[sender setStyle:UIBarButtonItemStyleDone];
-    //sender.title = @"Done";
-    //[sender setBackButtonBackgroundImage:UIBarButtonSystemItemDone forState:0 barMetrics:0];
+    if ([self.tableView isEditing])
+    {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEditButtonPressed:)];
+
+        [self.tableView setEditing: NO animated: YES];
+
+    }
+    else if (![self.tableView isEditing])
+    {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onEditButtonPressed:)];
+
+        [self.tableView setEditing:YES animated:YES];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -76,7 +84,20 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    if (cell.accessoryType == UITableViewCellAccessoryCheckmark)
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    else if (cell.accessoryType == UITableViewCellAccessoryNone)
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.toDoArray removeObjectAtIndex:indexPath.row];
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 
