@@ -36,7 +36,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"protoCell" forIndexPath:indexPath];
     cell.textLabel.text = [self.toDoArray objectAtIndex:indexPath.row];
@@ -46,8 +45,13 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self.toDoArray addObject:self.toDoTextField.text];
+    [self.tableView reloadData];
+    textField.text = @"";
+    [textField resignFirstResponder];
+    textField.enabled = NO;
 
-    [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.toDoArray.count-1 inSection:0]];
+    //[self tableView:self.tableView numberOfRowsInSection:0];
+    //[self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.toDoArray.count-1 inSection:0]];
 
     return YES;
 }
@@ -55,11 +59,8 @@
 - (IBAction)onAddButtonPressed:(id)sender
 {
     self.toDoTextField.enabled = YES;
+    [self.toDoTextField becomeFirstResponder];
 }
-
-
-
-
 
 
 
