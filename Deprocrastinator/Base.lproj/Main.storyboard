@@ -64,6 +64,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="editDoneButton" destination="ut8-vA-hbn" id="srB-Hk-O2b"/>
                         <outlet property="tableView" destination="gae-kT-QJ7" id="hld-vG-nZ7"/>
                         <outlet property="toDoTextField" destination="IlZ-F1-v5K" id="zVN-qR-gNW"/>
                     </connections>

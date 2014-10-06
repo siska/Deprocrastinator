@@ -12,6 +12,7 @@
 @property NSMutableArray *toDoArray;
 @property (weak, nonatomic) IBOutlet UITextField *toDoTextField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *editDoneButton;
 
 @end
 
@@ -38,9 +39,11 @@
 
 - (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender
 {
-    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onEditButtonPressed:)];
+    //[sender setStyle:UIBarButtonItemStyleDone];
+    //sender.title = @"Done";
+    //[sender setBackButtonBackgroundImage:UIBarButtonSystemItemDone forState:0 barMetrics:0];
 }
-
 
 #pragma mark - UITableViewDelegate
 
