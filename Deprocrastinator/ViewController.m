@@ -26,7 +26,18 @@
                       @"Finish Challenge",
                       @"Review Objective-C Book",
                       @"Walk the dog",
-                      @"Play tic-tac-toe", nil];
+                      @"Play tic-tac-toe",
+                      @"5",
+                      @"6",
+                      @"7",
+                      @"8",
+                      @"9",
+                      @"10",
+                      @"11",
+                      @"12",
+                      @"13",
+                      @"14",
+                      @"15", nil];
 
     self.toDoTextField.center = CGPointMake(self.toDoTextField.center.x, self.toDoTextField.center.y-self.toDoTextField.frame.size.height);
 }
