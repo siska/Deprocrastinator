@@ -8,7 +8,9 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource>
+@property NSArray *toDoArray;
+@property (weak, nonatomic) IBOutlet UITextField *toDoTextField;
 
 @end
 
@@ -16,12 +18,38 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+
+    self.toDoArray = [NSArray arrayWithObjects:
+                      @"Finish Challenge",
+                      @"Review Objective-C Book",
+                      @"Walk the dog",
+                      @"Play tic-tac-toe", nil];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.toDoArray.count;
 }
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"protoCell" forIndexPath:indexPath];
+    cell.textLabel.text = [self.toDoArray objectAtIndex:indexPath.row];
+    return cell;
+}
+
+- (IBAction)onAddButtonPressed:(id)sender {
+    self.toDoTextField.hidden = NO;
+}
+
+
+
+
+
+
+
+
+
 
 @end
