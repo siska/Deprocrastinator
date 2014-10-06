@@ -8,22 +8,26 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UITableViewDelegate, UITableViewDataSource>
-@property NSArray *toDoArray;
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@property NSMutableArray *toDoArray;
 @property (weak, nonatomic) IBOutlet UITextField *toDoTextField;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
-    self.toDoArray = [NSArray arrayWithObjects:
+    self.toDoArray = [NSMutableArray arrayWithObjects:
                       @"Finish Challenge",
                       @"Review Objective-C Book",
                       @"Walk the dog",
                       @"Play tic-tac-toe", nil];
+
+    self.toDoTextField.center = CGPointMake(self.toDoTextField.center.x, self.toDoTextField.center.y-self.toDoTextField.frame.size.height);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -39,8 +43,18 @@
     return cell;
 }
 
-- (IBAction)onAddButtonPressed:(id)sender {
-    self.toDoTextField.hidden = NO;
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.toDoArray addObject:self.toDoTextField.text];
+
+    [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.toDoArray.count-1 inSection:0]];
+
+    return YES;
+}
+
+- (IBAction)onAddButtonPressed:(id)sender
+{
+    self.toDoTextField.enabled = YES;
 }
 
 
