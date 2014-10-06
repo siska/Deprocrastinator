@@ -8,10 +8,11 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate>
 @property NSMutableArray *toDoArray;
 @property (weak, nonatomic) IBOutlet UITextField *toDoTextField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property NSIndexPath *indexPath;
 
 @end
 
@@ -89,6 +90,16 @@
 
 }
 
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != [alertView cancelButtonIndex])
+    {
+        [self.toDoArray removeObjectAtIndex:self.indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:@[self.indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        self.indexPath = nil;
+    }
+}
 
 #pragma mark - UITableViewDelegate
 
@@ -133,13 +144,18 @@
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.toDoArray removeObjectAtIndex:indexPath.row];
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirm" message:@"Are you sure you want to delete?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+        [alert show];
+
+        self.indexPath = indexPath;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    
+
 }
 
 
