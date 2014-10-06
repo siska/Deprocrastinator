@@ -44,12 +44,16 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="gae-kT-QJ7" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="0Ao-ck-xo7"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="gae-kT-QJ7" secondAttribute="bottom" id="3ZA-w8-WuV"/>
                             <constraint firstAttribute="trailing" secondItem="gae-kT-QJ7" secondAttribute="trailing" id="iX0-3j-Fi9"/>
                             <constraint firstItem="gae-kT-QJ7" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="wOh-yt-NfZ"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="lE6-wk-9IC" appends="YES" id="lKr-QY-3jV"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="To Do List" id="PFe-QC-XVo">
                         <barButtonItem key="leftBarButtonItem" systemItem="edit" id="ut8-vA-hbn">
@@ -69,6 +73,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="lE6-wk-9IC">
+                    <connections>
+                        <action selector="onSwipeGesture:" destination="vXZ-lx-hvc" id="odG-lM-2O9"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="951" y="136"/>
         </scene>

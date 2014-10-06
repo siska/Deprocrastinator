@@ -53,6 +53,43 @@
     }
 }
 
+- (IBAction)onSwipeGesture:(UISwipeGestureRecognizer *)sender {
+    CGPoint point = [sender locationInView:self.tableView];
+    NSIndexPath *path = [self.tableView indexPathForRowAtPoint:point];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+
+    NSArray *colorArray = [[NSArray alloc] initWithObjects:[UIColor blackColor], [UIColor redColor], [UIColor yellowColor], [UIColor greenColor], nil];
+
+    int colorInt = 100;
+    for (UIColor *color in colorArray)
+    {
+        if (cell.textLabel.textColor == color)
+        {
+            colorInt = (int)[colorArray indexOfObject:color];
+        }
+    }
+
+    switch (colorInt) {
+        case 0:
+            cell.textLabel.textColor = [UIColor redColor];
+            break;
+        case 1:
+            cell.textLabel.textColor = [UIColor yellowColor];
+            break;
+        case 2:
+            cell.textLabel.textColor = [UIColor greenColor];
+            break;
+        case 3:
+            cell.textLabel.textColor = [UIColor blackColor];
+            break;
+        default:
+            NSLog(@"No matching color found in colorArray at index: %i", colorInt);
+            break;
+    }
+
+}
+
+
 #pragma mark - UITableViewDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
