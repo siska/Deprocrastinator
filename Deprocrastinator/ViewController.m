@@ -13,6 +13,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *toDoTextField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property NSIndexPath *indexPath;
+@property (nonatomic, strong) NSMutableArray *selectedCells;
+
 
 @end
 
@@ -37,7 +39,14 @@
                       @"12",
                       @"13",
                       @"14",
-                      @"15", nil];
+                      @"15",
+                      @"16",
+                      @"17",
+                      @"18",
+                      @"19",
+                      @"20", nil];
+    // New Stuff:
+    self.selectedCells = [NSMutableArray array];
 
     self.toDoTextField.center = CGPointMake(self.toDoTextField.center.x, self.toDoTextField.center.y-self.toDoTextField.frame.size.height);
 }
@@ -122,9 +131,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"protoCell" forIndexPath:indexPath];
+    //New stuff:
+    cell.accessoryType = ([self isRowSelectedOnTableView:tableView atIndexPath:indexPath]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+
     cell.textLabel.text = [self.toDoArray objectAtIndex:indexPath.row];
     return cell;
 }
+// New Stuff:
+-(BOOL)isRowSelectedOnTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    return ([self.selectedCells containsObject:indexPath]) ? YES : NO;
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -143,14 +161,23 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (cell.accessoryType == UITableViewCellAccessoryCheckmark)
-    {
+    // New Stuff:
+    if([self isRowSelectedOnTableView:tableView atIndexPath:indexPath]){
+        [self.selectedCells removeObject:indexPath];
         cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    else if (cell.accessoryType == UITableViewCellAccessoryNone)
-    {
+    } else {
+        [self.selectedCells addObject:indexPath];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
+    //Old Stuff:
+//    if (cell.accessoryType == UITableViewCellAccessoryCheckmark)
+//    {
+//        cell.accessoryType = UITableViewCellAccessoryNone;
+//    }
+//    else if (cell.accessoryType == UITableViewCellAccessoryNone)
+//    {
+//        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//    }
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
