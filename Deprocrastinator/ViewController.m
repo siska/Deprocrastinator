@@ -110,6 +110,21 @@
 
 }
 
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.toDoArray addObject:self.toDoTextField.text];
+    [self.tableView reloadData];
+    textField.text = @"";
+    [textField resignFirstResponder];
+    textField.enabled = NO;
+
+    return YES;
+}
+
+
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -120,6 +135,7 @@
         self.indexPath = nil;
     }
 }
+
 
 #pragma mark - UITableViewDelegate
 
@@ -141,18 +157,6 @@
 -(BOOL)isRowSelectedOnTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     return ([self.selectedCells containsObject:indexPath]) ? YES : NO;
-}
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [self.toDoArray addObject:self.toDoTextField.text];
-    [self.tableView reloadData];
-    textField.text = @"";
-    [textField resignFirstResponder];
-    textField.enabled = NO;
-
-    return YES;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -193,7 +197,7 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-
+    // Needs to be implemented but remain empty for some reason?
 }
 
 
