@@ -7,14 +7,14 @@
 //
 
 #import "ViewController.h"
+#import "ToDo.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate>
-@property NSMutableArray *toDoArray;
+
+@property NSMutableArray *toDos;
 @property (weak, nonatomic) IBOutlet UITextField *toDoTextField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property NSIndexPath *indexPath;
-@property (nonatomic, strong) NSMutableArray *selectedCells;
-
 
 @end
 
@@ -24,7 +24,8 @@
 {
     [super viewDidLoad];
 
-    self.toDoArray = [NSMutableArray arrayWithObjects:
+    self.toDos = [[NSMutableArray alloc] init];
+    NSArray *toDoTasks = [NSArray arrayWithObjects:
                       @"Finish Challenge",
                       @"Review Objective-C Book",
                       @"Walk the dog",
@@ -45,10 +46,15 @@
                       @"18",
                       @"19",
                       @"20", nil];
-    // New Stuff:
-    self.selectedCells = [NSMutableArray array];
 
-    self.toDoTextField.center = CGPointMake(self.toDoTextField.center.x, self.toDoTextField.center.y-self.toDoTextField.frame.size.height);
+    for (NSString *task in toDoTasks)
+    {
+        ToDo *toDo = [[ToDo alloc] initWithTask:task priority:nil];
+        [self.toDos addObject:toDo];
+    }
+
+// Modify the table view starting location instead since the textfield is the tableView header:
+    //self.toDoTextField.center = CGPointMake(self.toDoTextField.center.x, self.toDoTextField.center.y-self.toDoTextField.frame.size.height);
 }
 
 - (IBAction)onAddButtonPressed:(id)sender
@@ -74,17 +80,23 @@
     }
 }
 
-- (IBAction)onSwipeGesture:(UISwipeGestureRecognizer *)sender {
+- (IBAction)onSwipeGesture:(UISwipeGestureRecognizer *)sender
+// For some reason swipes are also registering as selections
+{
     CGPoint point = [sender locationInView:self.tableView];
     NSIndexPath *path = [self.tableView indexPathForRowAtPoint:point];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+    ToDo *toDo = [self.toDos objectAtIndex:[self.tableView indexPathForCell:cell].row];
 
-    NSArray *colorArray = [[NSArray alloc] initWithObjects:[UIColor blackColor], [UIColor redColor], [UIColor yellowColor], [UIColor greenColor], nil];
+    NSArray *colorArray = [[NSArray alloc] initWithObjects:[UIColor blackColor],
+                                                           [UIColor redColor],
+                                                           [UIColor yellowColor],
+                                                           [UIColor greenColor], nil];
 
     int colorInt = 100;
     for (UIColor *color in colorArray)
     {
-        if (cell.textLabel.textColor == color)
+        if (toDo.priority == color)
         {
             colorInt = (int)[colorArray indexOfObject:color];
         }
@@ -92,22 +104,22 @@
 
     switch (colorInt) {
         case 0:
-            cell.textLabel.textColor = [UIColor redColor];
+            toDo.priority = [UIColor redColor];
             break;
         case 1:
-            cell.textLabel.textColor = [UIColor yellowColor];
+            toDo.priority = [UIColor yellowColor];
             break;
         case 2:
-            cell.textLabel.textColor = [UIColor greenColor];
+            toDo.priority = [UIColor greenColor];
             break;
         case 3:
-            cell.textLabel.textColor = [UIColor blackColor];
+            toDo.priority = [UIColor blackColor];
             break;
         default:
             NSLog(@"No matching color found in colorArray at index: %i", colorInt);
             break;
     }
-
+    // Do I not need to reloadData?
 }
 
 
@@ -115,7 +127,8 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self.toDoArray addObject:self.toDoTextField.text];
+    ToDo *toDo = [[ToDo alloc] initWithTask:textField.text priority:nil];
+    [self.toDos addObject:toDo];
     [self.tableView reloadData];
     textField.text = @"";
     [textField resignFirstResponder];
@@ -130,7 +143,7 @@
 {
     if (buttonIndex != [alertView cancelButtonIndex])
     {
-        [self.toDoArray removeObjectAtIndex:self.indexPath.row];
+        [self.toDos removeObjectAtIndex:self.indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:@[self.indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         self.indexPath = nil;
     }
@@ -141,47 +154,37 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.toDoArray.count;
+    return self.toDos.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"protoCell" forIndexPath:indexPath];
-    //New stuff:
-    cell.accessoryType = ([self isRowSelectedOnTableView:tableView atIndexPath:indexPath]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    ToDo *toDo = [self.toDos objectAtIndex:indexPath.row];
 
-    cell.textLabel.text = [self.toDoArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = toDo.task;
+    cell.textLabel.textColor = toDo.priority;
+    cell.accessoryType = [toDo isDone] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+
     return cell;
-}
-// New Stuff:
--(BOOL)isRowSelectedOnTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
-{
-    return ([self.selectedCells containsObject:indexPath]) ? YES : NO;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-// Add functionality to uncheck an item
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    // New Stuff:
-    if([self isRowSelectedOnTableView:tableView atIndexPath:indexPath]){
-        [self.selectedCells removeObject:indexPath];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    } else {
-        [self.selectedCells addObject:indexPath];
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    ToDo *toDo = [self.toDos objectAtIndex:indexPath.row];
+
+    if (toDo.isDone)
+    {
+        toDo.isDone = NO;
     }
-    //Old Stuff:
-//    if (cell.accessoryType == UITableViewCellAccessoryCheckmark)
-//    {
-//        cell.accessoryType = UITableViewCellAccessoryNone;
-//    }
-//    else if (cell.accessoryType == UITableViewCellAccessoryNone)
-//    {
-//        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-//    }
+    else
+    {
+        toDo.isDone = YES;
+    }
+
+    [self.tableView reloadData];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -199,6 +202,5 @@
 {
     // Needs to be implemented but remain empty for some reason?
 }
-
 
 @end

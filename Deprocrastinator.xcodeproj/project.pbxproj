@@ -14,6 +14,7 @@
 		12304E8719E318F200698101 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12304E8619E318F200698101 /* Images.xcassets */; };
 		12304E8A19E318F200698101 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12304E8819E318F200698101 /* LaunchScreen.xib */; };
 		12304E9619E318F200698101 /* DeprocrastinatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 12304E9519E318F200698101 /* DeprocrastinatorTests.m */; };
+		E96D879E19E45AE500FCA570 /* ToDo.m in Sources */ = {isa = PBXBuildFile; fileRef = E96D879D19E45AE500FCA570 /* ToDo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		12304E8F19E318F200698101 /* DeprocrastinatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeprocrastinatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		12304E9419E318F200698101 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12304E9519E318F200698101 /* DeprocrastinatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeprocrastinatorTests.m; sourceTree = "<group>"; };
+		E96D879C19E45AE500FCA570 /* ToDo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToDo.h; sourceTree = "<group>"; };
+		E96D879D19E45AE500FCA570 /* ToDo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToDo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,11 +84,13 @@
 		12304E7819E318F200698101 /* Deprocrastinator */ = {
 			isa = PBXGroup;
 			children = (
+				12304E8319E318F200698101 /* Main.storyboard */,
 				12304E7D19E318F200698101 /* AppDelegate.h */,
 				12304E7E19E318F200698101 /* AppDelegate.m */,
 				12304E8019E318F200698101 /* ViewController.h */,
 				12304E8119E318F200698101 /* ViewController.m */,
-				12304E8319E318F200698101 /* Main.storyboard */,
+				E96D879C19E45AE500FCA570 /* ToDo.h */,
+				E96D879D19E45AE500FCA570 /* ToDo.m */,
 				12304E8619E318F200698101 /* Images.xcassets */,
 				12304E8819E318F200698101 /* LaunchScreen.xib */,
 				12304E7919E318F200698101 /* Supporting Files */,
@@ -222,6 +227,7 @@
 				12304E8219E318F200698101 /* ViewController.m in Sources */,
 				12304E7F19E318F200698101 /* AppDelegate.m in Sources */,
 				12304E7C19E318F200698101 /* main.m in Sources */,
+				E96D879E19E45AE500FCA570 /* ToDo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +418,7 @@
 				12304E9B19E318F200698101 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		12304E9C19E318F200698101 /* Build configuration list for PBXNativeTarget "DeprocrastinatorTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +427,7 @@
 				12304E9E19E318F200698101 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
